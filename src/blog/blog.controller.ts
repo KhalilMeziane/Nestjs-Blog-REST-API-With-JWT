@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 
@@ -13,8 +13,18 @@ export class BlogController {
     }
 
 
+    @Get(':id')
+    getBlog(@Param('id', ParseIntPipe) blogId: number) : any{
+        return this.blogService.getBlog(blogId)
+    }
+
     @Get()
     getBlogs() : any{
-        return []
+        return this.blogService.getBlogs()
     }
+
+    @Patch(':id')
+    editBlog(@Param('id', ParseIntPipe) blogId: number, @Body() body : CreateBlogDto) : any{
+        return this.blogService.editBlog(blogId, body)   
+    }       
 }

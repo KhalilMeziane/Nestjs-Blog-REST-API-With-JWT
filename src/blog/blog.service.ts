@@ -15,4 +15,29 @@ export class BlogService {
         })
         return newBlog
     }
+
+    async getBlog(blogId:number){
+        const targetBlog = await this.prisma.blog.findUnique({
+            where:{
+                id: blogId
+            },
+        })
+        return targetBlog
+    }
+
+    async getBlogs(){
+        return await this.prisma.blog.findMany()
+    }
+
+    async editBlog(id: number, body: CreateBlogDto){
+        const updatedBlog = await this.prisma.blog.update({
+            where:{
+                id
+            },
+            data:{
+                ...body
+            }
+        })
+        return updatedBlog
+    }
 }
