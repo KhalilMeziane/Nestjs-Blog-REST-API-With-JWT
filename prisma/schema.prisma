@@ -16,7 +16,8 @@ model User {
   updatedAt DateTime @updatedAt
   email String @unique
   password String
-  username String?
+  username String
+  blogs Blog[]
   @@map("users")
 }
 
@@ -25,7 +26,9 @@ model Blog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title String
-  content String?
+  content String
   link String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
   @@map("blogs")
 }
