@@ -26,7 +26,7 @@ $ git remote remove origin
 # Install with NPM
 $ npm install
 ```
-# In the .env file
+##  In the .env file
 PORT = 3000
 DATABASE_URL="postgresql://username:password@localhost:5432/database_name?schema=public"
 JWT_SECRET=""
