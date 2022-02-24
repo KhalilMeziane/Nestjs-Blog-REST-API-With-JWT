@@ -34,6 +34,9 @@ $ npm install
 ```
 Lastly launch the Project:
 ```bash
+$ npm run init
+$ npm run generate
+$ npm run migrate
 # Launch with NPM
 $ npm run dev
 ```
