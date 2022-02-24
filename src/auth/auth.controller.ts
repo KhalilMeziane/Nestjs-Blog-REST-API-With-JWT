@@ -8,7 +8,7 @@ export class AuthController {
 
     @Post('login')
     login(@Body() body: any) : any{
-        return this.authService.login(body.email)
+        return this.authService.login(body)
     }
 
     @Post('signup')
