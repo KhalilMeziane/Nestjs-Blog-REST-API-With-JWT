@@ -27,14 +27,14 @@ export class BlogController {
         return this.blogService.getBlogByAuthor(blogId, userId)
     }
 
-    @Get()
-    getBlogs(){
-        return this.blogService.getBlogs()
+    @Get('all/:skip')
+    getBlogs(@Param('skip', ParseIntPipe) skip: number){
+        return this.blogService.getBlogs(skip)
     }
 
-    @Get('/author')
-    getBlogsByAuthor(@GetUser('id') userId: number){
-        return this.blogService.getBlogsByAuthor(userId)
+    @Get('/author/:skip')
+    getBlogsByAuthor(@GetUser('id') userId: number, @Param('skip', ParseIntPipe) skip: number){
+        return this.blogService.getBlogsByAuthor(userId, skip)
     }
 
     @Patch(':id')
@@ -47,8 +47,8 @@ export class BlogController {
         return this.blogService.deleteBlog(blogId, userId)
     }
 
-    @Get('search')
-    searchForBlog(@Body() body){
-        return this.blogService.searchForBlog(body.title,body.skip)
+    @Get('search/:skip')
+    searchForBlog(@Body() body, @Param('skip', ParseIntPipe) skip: number){
+        return this.blogService.searchForBlog(body.title, skip)
     }
 }
