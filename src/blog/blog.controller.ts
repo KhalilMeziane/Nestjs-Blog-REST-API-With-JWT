@@ -46,4 +46,9 @@ export class BlogController {
     deleteBlog(@Param('id', ParseIntPipe) blogId: number, @GetUser('id') userId: number){
         return this.blogService.deleteBlog(blogId, userId)
     }
+
+    @Get('search')
+    searchForBlog(@Body() body){
+        return this.blogService.searchForBlog(body.title)
+    }
 }
