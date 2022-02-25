@@ -1,5 +1,5 @@
 
-export class CreateBlogDto {
+export class GetBlogDto {
 
     title: string;
     content: string;

@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { CreateBlogDto } from './dto';
+import { CreateBlogDto, GetBlogDto } from './dto';
 import { PrismaService } from './../prisma/prisma.service';
 
 @Injectable()
@@ -17,42 +17,87 @@ export class BlogService {
         return newBlog
     }
 
-    async getBlog(blogId:number){
+    async getBlog(blogId:number) : Promise<GetBlogDto>{
         const targetBlog = await this.prisma.blog.findFirst({
             where:{
                 id: blogId
             },
+            select:{
+                title:true,
+                content: true,
+                link: true,
+                user:{
+                    select: {
+                        username: true,
+                        id: true
+                    }
+                }
+            }
         })
         // condition need some code to check if its empty when resource is not denied
         if(!targetBlog) throw new ForbiddenException('Access to resources denied')
         return targetBlog
     }
 
-    async getBlogByAuthor(blogId:number, userId){
+    async getBlogByAuthor(blogId:number, userId) : Promise<GetBlogDto>{
         const targetBlog = await this.prisma.blog.findFirst({
             where:{
                 id: blogId,
                 userId
             },
+            select:{
+                title:true,
+                content: true,
+                link: true,
+                user:{
+                    select: {
+                        username: true,
+                        id: true
+                    }
+                }
+            }
         })
         // condition need some code to check if its empty when resource is not denied
         if(!targetBlog) throw new ForbiddenException('Access to resources denied')
         return targetBlog
     }
 
-    async getBlogs(){
-        return await this.prisma.blog.findMany()
-    }
-
-    async getBlogsByAuthor(userId){
+    async getBlogs() : Promise<GetBlogDto[]>{
         return await this.prisma.blog.findMany({
-            where:{
-                userId
+            select:{
+                title:true,
+                content: true,
+                link: true,
+                user:{
+                    select: {
+                        username: true,
+                        id: true
+                    }
+                }
             }
         })
     }
 
-    async editBlog(id: number, body: CreateBlogDto, userId : number){
+    async getBlogsByAuthor(userId) : Promise<GetBlogDto[]>{
+        return await this.prisma.blog.findMany({
+            where:{
+                userId
+            },
+            select:{
+                title:true,
+                content: true,
+                link: true,
+                user:{
+                    select: {
+                        username: true,
+                        id: true
+                    }
+                }
+            }
+        })
+    }
+
+    async editBlog(id: number, body: CreateBlogDto, userId : number) : Promise<GetBlogDto>{
         const targetBlog = await this.prisma.blog.findFirst({
             where:{
                 id,
@@ -68,6 +113,11 @@ export class BlogService {
             },
             data:{
                 ...body
+            },
+            select:{
+                title:true,
+                content: true,
+                link: true,
             }
         })
         return updatedBlog
@@ -88,5 +138,6 @@ export class BlogService {
                 id
             }
         })
+        return {message: "delete done"}
     }
 }
