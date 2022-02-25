@@ -18,12 +18,22 @@ export class BlogController {
 
     @Get(':id')
     getBlog(@Param('id', ParseIntPipe) blogId: number, @GetUser('id') userId: number) : any{
-        return this.blogService.getBlog(blogId, userId)
+        return this.blogService.getBlog(blogId)
+    }
+
+    @Get(':id/author')
+    getBlogByAuthor(@Param('id', ParseIntPipe) blogId: number, @GetUser('id') userId: number) : any{
+        return this.blogService.getBlogByAuthor(blogId, userId)
     }
 
     @Get()
-    getBlogs(@GetUser('id') userId: number) : any{
-        return this.blogService.getBlogs(userId)
+    getBlogs() : any{
+        return this.blogService.getBlogs()
+    }
+
+    @Get('/author')
+    getBlogsByAuthor(@GetUser('id') userId: number) : any{
+        return this.blogService.getBlogsByAuthor(userId)
     }
 
     @Patch(':id')

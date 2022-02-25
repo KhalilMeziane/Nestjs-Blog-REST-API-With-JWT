@@ -17,7 +17,18 @@ export class BlogService {
         return newBlog
     }
 
-    async getBlog(blogId:number, userId){
+    async getBlog(blogId:number){
+        const targetBlog = await this.prisma.blog.findFirst({
+            where:{
+                id: blogId
+            },
+        })
+        // condition need some code to check if its empty when resource is not denied
+        if(!targetBlog) throw new ForbiddenException('Access to resources denied')
+        return targetBlog
+    }
+
+    async getBlogByAuthor(blogId:number, userId){
         const targetBlog = await this.prisma.blog.findFirst({
             where:{
                 id: blogId,
@@ -29,7 +40,11 @@ export class BlogService {
         return targetBlog
     }
 
-    async getBlogs(userId){
+    async getBlogs(){
+        return await this.prisma.blog.findMany()
+    }
+
+    async getBlogsByAuthor(userId){
         return await this.prisma.blog.findMany({
             where:{
                 userId
