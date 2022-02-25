@@ -49,6 +49,6 @@ export class BlogController {
 
     @Get('search')
     searchForBlog(@Body() body){
-        return this.blogService.searchForBlog(body.title)
+        return this.blogService.searchForBlog(body.title,body.skip)
     }
 }

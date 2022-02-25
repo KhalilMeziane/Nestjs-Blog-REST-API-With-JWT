@@ -141,15 +141,17 @@ export class BlogService {
         return {message: "delete done"}
     }
 
-    async searchForBlog(text){
+    async searchForBlog(text,skip){
         const listOfBlogs = await this.prisma.blog.findMany({
+            take: 5,
+            skip,
             where:{
                 title:{
                     startsWith:text
                 }
             },
-            select:{
-                title:true
+            orderBy: {
+                id: 'asc',
             }
         })
 
