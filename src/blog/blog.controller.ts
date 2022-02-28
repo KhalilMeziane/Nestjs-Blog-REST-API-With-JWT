@@ -5,12 +5,23 @@ import { BlogService } from './blog.service';
 import { GetBlogDto } from './dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 
-@UseGuards(AuthGuard('jwt'))
+
 @Controller('blog')
 export class BlogController {
 
     constructor(private blogService : BlogService){}
 
+    // @UseGuards(AuthGuard('jwt'))
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('author')
+    getBlogsByAuthor(@GetUser('id') userId: number){
+        console.log('hi from cn')
+        return this.blogService.getBlogsByAuthor(userId)
+    }
+
+
+    @UseGuards(AuthGuard('jwt'))
     @Post()
     createBlog(@Body() body : CreateBlogDto, @GetUser('id') userId: number){
         return this.blogService.createBlog(body, userId)
@@ -18,7 +29,7 @@ export class BlogController {
 
 
     @Get(':id')
-    getBlog(@Param('id', ParseIntPipe) blogId: number, @GetUser('id') userId: number){
+    getBlog(@Param('id', ParseIntPipe) blogId: number){
         return this.blogService.getBlog(blogId)
     }
 
@@ -27,21 +38,19 @@ export class BlogController {
         return this.blogService.getBlogByAuthor(blogId, userId)
     }
 
-    @Get('all/:skip')
-    getBlogs(@Param('skip', ParseIntPipe) skip: number){
-        return this.blogService.getBlogs(skip)
+    @Get('')
+    getBlogs(){
+        return this.blogService.getBlogs()
     }
 
-    @Get('/author/:skip')
-    getBlogsByAuthor(@GetUser('id') userId: number, @Param('skip', ParseIntPipe) skip: number){
-        return this.blogService.getBlogsByAuthor(userId, skip)
-    }
 
+    @UseGuards(AuthGuard('jwt'))
     @Patch(':id')
     editBlog(@Param('id', ParseIntPipe) blogId: number, @Body() body : CreateBlogDto, @GetUser('id') userId: number){
         return this.blogService.editBlog(blogId, body, userId)   
     }   
     
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     deleteBlog(@Param('id', ParseIntPipe) blogId: number, @GetUser('id') userId: number){
         return this.blogService.deleteBlog(blogId, userId)

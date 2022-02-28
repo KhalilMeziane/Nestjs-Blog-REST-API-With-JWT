@@ -11,7 +11,8 @@ export class BlogService {
         const newBlog = await this.prisma.blog.create({
             data:{
                 ...body,
-                userId
+                userId,
+                link:"fdddd"
             }
         })
         return newBlog
@@ -26,6 +27,8 @@ export class BlogService {
                 title:true,
                 content: true,
                 link: true,
+                createdAt:true,
+                id: true,
                 user:{
                     select: {
                         username: true,
@@ -49,6 +52,7 @@ export class BlogService {
                 title:true,
                 content: true,
                 link: true,
+                id: true,
                 user:{
                     select: {
                         username: true,
@@ -61,16 +65,17 @@ export class BlogService {
         if(!targetBlog) throw new ForbiddenException('Access to resources denied')
         return targetBlog
     }
-    async getBlogs(skip) : Promise<GetBlogDto[]>{
+    async getBlogs() : Promise<GetBlogDto[]>{
         
         const list =  await this.prisma.blog.findMany({
-            take: 4,
-            skip: skip === 1? 0 : (skip-1) * 4,
+            // take: 4,
+            // skip: skip === 1? 0 : (skip-1) * 4,
             select:{
                 title: true,
                 content: true,
                 link: true,
                 id: true,
+                createdAt:true,
                 user:{
                     select: {
                         username: true,
@@ -85,10 +90,11 @@ export class BlogService {
         return list
     }
 
-    async getBlogsByAuthor(userId, skip) : Promise<GetBlogDto[]>{
+    async getBlogsByAuthor(userId) : Promise<GetBlogDto[]>{
+        console.log("userId: ", userId)
         return await this.prisma.blog.findMany({
-            take: 4,
-            skip: skip === 1? 0 : (skip-1) * 4,
+            // take: 4,
+            // skip: skip === 1? 0 : (skip-1) * 4,
             where:{
                 userId
             },
@@ -96,6 +102,8 @@ export class BlogService {
                 title:true,
                 content: true,
                 link: true,
+                createdAt:true,
+                id: true,
                 user:{
                     select: {
                         username: true,
